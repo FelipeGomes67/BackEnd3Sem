@@ -1,3 +1,4 @@
+using Azure.AI.ContentSafety;
 using EventPlus.WebAPI.BdContextEvento;
 using EventPlus.WebAPI.Interface;
 using EventPlus.WebAPI.Repository;
@@ -18,6 +19,16 @@ builder.Services.AddScoped<IInstituicaoRepository, InstituicaoRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IEventoRepository, EventoRepository>();
 builder.Services.AddScoped<IPresencaRepository, PresencaRepository>();
+builder.Services.AddScoped<IComentarioEventoRepository, ComentarioEventoRepository>();
+
+
+//Configuração do Azure Content Safety
+var endPoint = "https://moderatorservice-marcos.cognitiveservices.azure.com/";
+var apiKey = "";
+
+var client = new ContentSafetyClient(new Uri(endPoint), new Azure.AzureKeyCredential(apiKey));
+builder.Services.AddSingleton(client);
+
 
 builder.Services.AddAuthentication(options =>
 {

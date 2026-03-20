@@ -22,7 +22,7 @@ public class ComentarioEventoRepository : IComentarioEventoRepository
             .FirstOrDefault(c => c.IdUsuario == idUsuario && c.IdEvento == idEvento)!;
     }
 
-    public void CadastrarComentarioEvento(ComentarioEvento comentarioEvento)
+    public void Cadastrar(ComentarioEvento comentarioEvento)
     {
         _context.ComentarioEventos.Add(comentarioEvento);
         _context.SaveChanges();
