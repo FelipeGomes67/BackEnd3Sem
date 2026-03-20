@@ -1,32 +1,54 @@
+using EventPlus.WebAPI.BdContextEvento;
 using EventPlus.WebAPI.Interface;
 using EventPlus.WebAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace EventPlus.WebAPI.Repository;
 
 public class ComentarioEventoRepository : IComentarioEventoRepository
 {
-    public ComentarioEvento BuscarPorIdUsuario(Guid IdUsuario, Guid IdEvento)
+    private readonly EventosContext _context;
+
+    public ComentarioEventoRepository(EventosContext context)
     {
-        throw new NotImplementedException();
+        _context = context;
+    }
+
+    public ComentarioEvento BuscarPorIdUsuario(Guid idUsuario, Guid idEvento)
+    {       
+        return _context.ComentarioEventos
+            .Include(c => c.IdUsuarioNavigation)
+            .Include(c => c.IdEventoNavigation)
+            .FirstOrDefault(c => c.IdUsuario == idUsuario && c.IdEvento == idEvento)!;
     }
 
     public void CadastrarComentarioEvento(ComentarioEvento comentarioEvento)
     {
-        throw new NotImplementedException();
+        _context.ComentarioEventos.Add(comentarioEvento);
+        _context.SaveChanges();
     }
 
-    public void Deletar(Guid IdComentarioEvento)
+    public void Deletar(Guid idComentarioEvento)
     {
-        throw new NotImplementedException();
+        var comentarioEventoBuscado = _context.ComentarioEventos.Find(idComentarioEvento);
+        if (comentarioEventoBuscado != null)
+        {
+            _context.ComentarioEventos.Remove(comentarioEventoBuscado);
+            _context.SaveChanges();
+        }               
     }
 
-    public List<ComentarioEvento> Listar(Guid IdEvento)
+    public List<ComentarioEvento> Listar(Guid idEvento)
     {
-        throw new NotImplementedException();
+        return _context.ComentarioEventos.ToList();
     }
 
-    public List<ComentarioEvento> ListarSomenteExibe(Guid IdEvento)
+    public List<ComentarioEvento> ListarSomenteExibe(Guid idEvento)
     {
-        throw new NotImplementedException();
+        return _context.ComentarioEventos
+            .Include(c => c.IdUsuarioNavigation)
+            .Include(c => c.IdEventoNavigation)
+            .Where(c => c.IdEvento == idEvento && c.Exibe)
+            .ToList();
     }
 }
