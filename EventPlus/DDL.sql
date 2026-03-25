@@ -56,9 +56,10 @@ CREATE TABLE Presenca(
 );
 
 SELECT * FROM TipoUsuario;
-SELECT * FROM Usuario;
 SELECT * FROM Instituicao;
 SELECT * FROM TipoEvento;
-SELECT * FROM Evento;
 SELECT * FROM ComentarioEvento;
 SELECT * FROM Presenca;
+
+SELECT * FROM Usuario;
+SELECT * FROM Evento;
